@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rails', '3.2.13'
 
-gem 'sqlite3'             
+gem 'pg'
 gem 'redis'
 gem 'nest'
 
@@ -16,6 +16,7 @@ gem 'jquery-rails'
 gem 'rails-backbone'
 
 group :development, :test do
+  gem 'sqlite3'
   gem 'rspec-rails', '~> 2.0'
   gem 'jasmine-rails'
 end
