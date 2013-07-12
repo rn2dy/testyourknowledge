@@ -13,3 +13,9 @@ This is a simple survey builder
 
 * Submit a form
 * Compute Score
+
+
+scripts:
+VERBOS=1 QUEUE=mailer rake resque:work
+VERBOS=1 QUEUE=score_calculation rake resque:work
+

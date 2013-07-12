@@ -9,9 +9,9 @@ $ ->
       name:        $(@).find('#survey_name').val()
       description: $(@).find('#survey_description').val()
       
-    survey = new Questions.Models.Survey
+    survey = new SurveyBuilder.Models.Survey
     survey.save survey_attrs,
       success: (model) ->
-        window.location = "/builder?survey=#{model.get('id')}"
+        window.location = "/builder/survey/#{model.get('id')}"
       error: ->
         alert 'failed'

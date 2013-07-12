@@ -61,7 +61,7 @@ class SurveysController < ApplicationController
     respond_to do |format|
       if @survey.update_attributes(params[:survey])
         format.html { redirect_to @survey, notice: 'Survey was successfully updated.' }
-        format.json { head :no_content }
+        format.json { render json: @survey }
       else
         format.html { render action: "edit" }
         format.json { render json: @survey.errors, status: :unprocessable_entity }
@@ -80,4 +80,5 @@ class SurveysController < ApplicationController
       format.json { head :no_content }
     end
   end
+  
 end

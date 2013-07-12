@@ -1,0 +1,12 @@
+<% if @survey_participant.errors.any? %>
+  var errors = "";
+  <% @survey_participant.errors.full_messages.each do |msg| %> 
+    errors += "<p><%= msg %>.</p>";
+  <% end %>
+  $('.modal-header .alert-error').html(errors).show();
+  lada.stop();
+<% else %>
+  $('.registration').modal('hide');
+  $('.registration').remove();
+  $('#published-survey-form').attr('action', '<%= survey_participant_path(@survey_participant)%>');
+<% end %>

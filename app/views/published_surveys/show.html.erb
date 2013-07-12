@@ -1,0 +1,109 @@
+<div class="container">
+  <header class="page-header">
+    <h3><%= @survey.name %></h3>
+    <p class="description"><%= @survey.description %></p>
+  </header>
+  
+  <section id="app-container" class="row published-app">
+    <div id="builder">
+      <%= form_tag('#', method: 'put', remote: true, id: "published-survey-form") %>   
+        <div class="alert">
+          <strong>Instructions:</strong> Click on the radio button to make your choice. Pay attention to how many correct answers there might be.<br>Good luck!
+        </div>
+        <div id="questions">
+          <!-- builder sections -->
+          <% @questions.each_with_index do |q, idx| %>
+            <div class="builder-section">
+              <% answers = q.answers_and_configs %>
+              <div class="control-group row">
+                <div class="span1 bulletin"><span><%= idx + 1 %>.</span></div>
+                <div class="span7">
+                  <span><%= q.title %></span>
+                  <span class="instr">
+                    (<%= answers[:type] == 's' ? "There is only 1 correct answer" : "There are 2 or more correct answers" %>).</span>
+                </div>
+              </div>              
+              <% answers[:answers].keys.sort.each do |bulletin| %>
+                <div class="control-group row">
+                  <div class="span1 bulletin">
+                    <label class="<%= answers[:type] == 's' ? 'radio' : 'checkbox' %>">
+                      <input type="<%= answers[:type] == 's' ? 'radio' : 'checkbox' %>" value='<%= bulletin %>' name='attrs[selects[<%= "Q-#{q.id}#{ answers[:type] == 's' ? '' : '-' + bulletin }]]" %>'><%= bulletin %>. 
+                    </label>
+                  </div>
+                  <div class="span7">
+                    <span class="answer" data-bulletin="<%= bulletin %>"><%= answers[:answers][bulletin] %></span>                    
+                  </div>
+                </div>
+              <% end %>              
+            </div>
+          <% end %>
+        </div>
+        <div id="add-question">
+          <button class="ladda-button survey-submit-btn" data-style="expand-right" data-size="s" data-color="mint"><span class="ladda-label">Submit</span></button>
+        </div>   
+      </form>
+    </div>
+  </section>
+  
+  <footer class="page-footer">
+    <div>Copyright 2013 &copy; Comity Designs Inc.</div>
+  </footer>
+</container>
+
+<div class="modal hide fade registration">  
+  <div class="modal-header">    
+    <div class="alert">Please register your information to start the survey.</div>
+    <div class="alert alert-error" style="display:none;"></div>
+  </div>  
+  <div class="modal-body" style="width:250px;margin:auto;">    
+    <%= form_for(@survey_participant, :remote => true) do |f| %>
+      <fieldset>
+        <label>First Name</label>
+        <%= f.text_field :firstname, :placeholder => 'first name' %>
+        <label>Last Name</label>                                  
+        <%= f.text_field :lastname, :placeholder => 'last name' %>
+        <label>Email</label>                                      
+        <%= f.text_field :email, :placeholder => 'email' %>
+        <%= f.hidden_field :published_survey_id, :value => @published_survey.id %>
+      </fieldset>
+    <% end %>
+  </div>
+  <div class="modal-footer">
+    <button class="ladda-button register-btn" data-style="expand-right" data-size="s" data-color="mint"><span class="ladda-label">Register</span></button>
+  </div>
+</div>
+
+<div class="modal hide fade session">
+  <div class="modal-body">
+    <div class="alert alert-error">
+      Your current session is expired. Please refresh this page to start a new session.
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-inverse refresh">Refresh</button>
+  </div>  
+</div>
+
+<% content_for :js do %>
+  <script>
+    var lada = null;
+    $(function(){
+      $('.registration').modal({ backdrop: 'static', keyboard: 'false' });
+      $('.register-btn').click(function(e){
+        if(lada) lada.stop();
+        lada = Ladda.create($('.register-btn')[0]);
+        lada.start();
+        $('form#new_survey_participant').submit();    
+      });
+      $('.survey-submit-btn').click(function(e){
+        if(lada) lada.stop();
+        lada = Ladda.create($('.survey-submit-btn')[0]);
+        lada.start();
+        $('form#published-survey-form').submit();
+      });
+      $('.refresh').click(function(e){
+        location.reload();
+      });
+    });
+  </script>
+<% end %>

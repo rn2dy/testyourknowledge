@@ -39,7 +39,7 @@ class QuestionsController < ApplicationController
 
   # POST /questions
   # POST /questions.json
-  def create
+  def create    
     @question = Question.new(params[:question])
 
     respond_to do |format|
@@ -61,7 +61,7 @@ class QuestionsController < ApplicationController
     respond_to do |format|
       if @question.update_attributes(params[:question])
         format.html { redirect_to @question, notice: 'Question was successfully updated.' }
-        format.json { head :no_content }
+        format.json { render json: @question }
       else
         format.html { render action: "edit" }
         format.json { render json: @question.errors, status: :unprocessable_entity }
@@ -78,6 +78,16 @@ class QuestionsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to questions_url }
       format.json { head :no_content }
+    end
+  end
+  
+  def save_all                                        
+    respond_to do |format|                        
+      if Question.save_updates(params[:questions])
+        format.json { head :no_content }
+      else
+        format.json { render json: { error: "Failed save all questions' update!" }, status: :unprocessable_entity }
+      end
     end
   end
 end

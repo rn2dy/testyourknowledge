@@ -1,0 +1,36 @@
+<% if(id) { %>
+<div class="modal-body">
+  <div class="control-group">
+    <div class="alert alert-success">
+      The following URL is the location of the published survey.
+      You can forward the this URL to anyone who wants to take the survey.
+      All results will be collected and send to the email you registered previously when publishing the survey.
+      This URL is also send to your email address.
+    </div>
+    <div>
+      <b class="url" id="url-to-copy"><%= window.location.origin + '/published_surveys/' + id %></b>
+      <button class="btn btn-link" id="copy-btn" data-clipboard-target="url-to-copy">copy</button>
+    </div>
+  </div>
+</div>  
+<% } else { %>
+<div class="modal-body">
+  <form class="form-horizontal">                              
+    
+    <div class="alert alert-error" style="display:none"></div>
+    
+    <div class="control-group">
+      <div class="alert">Register an email with this survey. This final survey URL will be delivered to the email you put down here. Make sure the email address is valid!</div>        
+      <label class="control-label" for="email">Email</label>
+      <div class="controls"><input name="email" id="email" type="text"/></div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="email-confirm">Confirm</label>
+      <div class="controls"><input name="email-confirm" id="email-confirm" type="text"/></div>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button class="ladda-button register-email" data-style="expand-right" data-size="s" data-color="mint"><span class="ladda-label">Save</span></button>
+</div>
+<% } %>

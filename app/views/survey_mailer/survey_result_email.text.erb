@@ -1,0 +1,13 @@
+Thanks for taking the survey! Here is your score summary:
+========================================================
+           
+Survey: <%= @survey.name %>
+Participant: <%= @survey_participant.fullname %>
+
+Final Score: <%= @final_result[:total] %>
+You got: <%= @final_result[:correct_answers_count] %> out of <%= @final_result[:questions_count] %> correct.
+
+
+If you have any questions please send emails to <%= @published_survey.email %> or reply to this email.
+
+Thanks,

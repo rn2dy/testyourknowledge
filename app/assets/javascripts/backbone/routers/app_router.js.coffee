@@ -1,6 +1,14 @@
-class Questions.Routers.AppRouter extends Backbone.Router
+class SurveyBuilder.Routers.AppRouter extends Backbone.Router
+  initialize: (options)->
+    @survey = options['survey']
+    @questions = options['questions']
+  
   routes:
-    "" : "builder"
+    ":survey_id" : "builder"
     
   builder: ->
-    alert "in builder"
+    builderMasterView = new SurveyBuilder.Views.Builder.Master
+      model: new SurveyBuilder.Models.Survey(@survey, { parse: true })      
+      collection: new SurveyBuilder.Collections.Questions(@questions)
+      
+    $('#app-container').append builderMasterView.render().el

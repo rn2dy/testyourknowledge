@@ -32,7 +32,8 @@ body {
   }
 } 
 
-#builder {
+#builder { 
+  padding-top: 11px;
   background: #FFF;
   -webkit-box-shadow: inset 0 0 3px #777;
   -moz-box-shadow: inset 0 0 3px #777;
@@ -65,11 +66,13 @@ body {
     margin: 10px;
   }
 }              
-
 .builder-section {
-  margin-bottom: 10px;  
+  margin-bottom: 15px;
+  margin-top: 25px;
+  border-bottom: 1px dashed rgba(0,0,0,0.13);
+  padding-bottom: 15px;
   > div:first-child {
-    border-right: 1px dashed #ccc;
+    border-right: 1px solid rgba(0,0,0,0.13);
   }
   > div:last-child label {
     margin-bottom: 7px;
@@ -77,15 +80,57 @@ body {
   > div:last-child input[type='text'] {
     margin-left: 5px;
   }
+  .control-group .bulletin {
+    margin-top: 1px;
+    font-size: 0.83em;
+  }
+  input[type='radio'], input[type='checkbox'] { 
+    zoom: 0.85;
+  }
+  .control-group:first-child .span7 {
+    position: relative;
+    left: -32px;
+    font-weight: bolder;
+    .instr {
+      font-weight: 300;
+      font-size: 0.83em;
+    }
+  }  
   .control-group div:first-child {
     text-align: right;
   }                    
   .control-group:first-child div:first-child {
     text-align: center;
   }
+  .control-group:last-child .add-answer {
+    margin-left: 45px;
+  }
 }
+.published-app {
+  margin-top: 5px !important;
+}
+.published-app .builder-section > div:first-child {
+  border:none;
+}
+
+/*#survey-form, */
+#published-survey-form {
+  width: 90%;
+  margin: auto;
+}
+.page-header .description { 
+  font-weight: lighter; 
+}
+
+.marker {
+  zoom: 0.8;
+  cursor: pointer;
+}          
+
 #add-question {
+  padding-top: 7px;
   text-align: center;
+  height: 110px;
 }
 .page-footer {
   border-top: 1px solid #CCC;
@@ -103,4 +148,27 @@ body {
 .icon-plus-sign {
   zoom: 1.2;
   margin: -3px 0 0 5px;
+}
+.runner {
+  display: none;
+  line-height: 40px;
+  span {
+    display: inline-block;
+    position: relative;
+    bottom: -8px;
+    color: #CACACA;
+    text-shadow: 1px 1px #EFEFEF;
+  }
+}
+
+#copy-btn {
+  font-size: 0.83em;
+  text-decoration: none;
+}
+b.url {
+  padding: 4px 5px;
+  border: 1px dashed #CCC;
+}
+.alert-error p {
+  margin: 0;
 }

@@ -3,7 +3,7 @@ class CreateSurveys < ActiveRecord::Migration
     create_table :surveys do |t|
       t.string :name
       t.string :description
-      t.string :question_ids
+      t.string :question_ids, default: ''
 
       t.timestamps
     end

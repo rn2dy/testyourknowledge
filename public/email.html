@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
+</head>
+<body style="color:#444;font-size:14px;">
+  <div class="container" style="background:rgb(217, 250, 252);-webkit-border-radius:8px;-moz-border-radius: 8px;border-radius:8px;padding:10px;">
+    <div style="font-size:1.1em;">
+      <span class="title"><i class="logo" style="font-style:normal;font-size:1.2em;">&#9745;</i> Thanks for taking the survey! </span>
+    </div>  
+    <div style="background:#FFF;padding:7px;margin:8px 0px;border:1px solid rgba(0,0,0,0.13);">      
+      <p>
+        <b>Here is your score summary:</b>
+      </p>
+      <p><b>Survey:</b> <%= @survey.name %></p>
+      <p><b>Participant:</b> <%= @survey_participant.fullname %></p>
+      <p><b>Final Score:</b> <%= @final_result[:total] %></p>
+      <p><b>You got:</b> <%= @final_result[:correct_answers_count] %> out of <%= @final_result[:questions_count] %> correct.</p>
+      <p><i>If you have any questions please send emails to <%= @published_survey.email %> or reply to this email.</i></p>
+    </div>                                                                                       
+    <div style="text-align:center;font-size:0.87em;border-top:1px dashed rgba(0,0,0,0.33);">
+      <p>We'd like to hear from you too, just reply to this email with anything you want to say to us. <i class="face" style="font-style:normal;font-size:1.2em;">&#9786;</i></p>
+      <em>&copy; 2013 ComityDesigns Inc.</em>
+    </div>
+  </div>
+</body>
+</html>

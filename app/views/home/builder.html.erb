@@ -4,77 +4,6 @@
   </header>
   
   <section id="app-container" class="row">
-    <article id="builder">
-      <header class="row">
-        <div class="span4 offset1"><h4>Salesforce Knowledge Test</h4></div>
-        <div class="span2 offset3"><button class="btn btn-primary">Publish</button></div>
-      </header>                                         
-      <hr/>
-      <section id="builder-form">
-        <div class="row">
-          <label>Total Score <span class="badge badge-inverse">10</span></label>
-        </div>                                                    
-        <section class="row builder-section">
-          <div class="span6">
-            <!-- <form>
-              <div class="control-group row">
-                <div class="span1"><span>1.</span></div>
-                <div class="span4">
-                  <textarea rows="1" class="input-xlarge" name="" value=""></textarea>
-                </div>
-              </div>
-              <div class="control-group row">
-                <div class="span1"><span>A.</span></div>
-                <div class="span4">
-                  <textarea class="input-large" name="" value="" rows="1"></textarea></div>
-              </div>            
-              <div class="control-group row">
-                <div class="span1"><span>B.</span></div>
-                <div class="span4">
-                  <textarea class="input-large" name="" value="" rows="1"></textarea>
-                  <i class="icon-plus-sign"></i>
-                </div>
-              </div>
-            </form> --> 
-            <form>
-              <div class="control-group row">
-                <div class="span1"><span>1.</span></div>
-                <div class="span5">
-                  What is the difference between LookUp relationship and Master-Detail relationship?
-                </div>
-              </div>
-              <div class="control-group row">             
-                <div class="span1">
-                  <input type="radio" name="" value=""/>
-                </div>
-                <div class="span4">
-                  The child part of the Lookup relationship do not inherit sharing models from its parent.
-                </div>
-              </div>            
-              <div class="control-group row">
-                <div class="span1">
-                  <input type="radio" name="" value=""/>
-                </div>                
-                <div class="span4">
-                  Deleting parent record will automatically delete child records if they are in Master-Dial relationship.
-                </div>
-              </div>            
-            </form>
-          </div>           
-          <div class="span4">
-             <label class="radio inline"><input type="radio" name="" value="mutilple"/>Muti-Select</label>
-             <label class="radio inline">
-               <input type="radio" name="" value="mutilple"/>Single-Select</label>
-             <label>Score <input type="text" class="input-mini" value="2"/></label>
-             <button class="btn btn-small">Randomize</button>
-          </div>
-        </section>                                                              
-        <hr>
-        <div id="add-question">
-          <i class="icon-plus"></i><button class="btn btn-link">Add Question</button>
-        </div>
-      </section>
-    </article>                                   
     
   </section>
   
@@ -82,3 +11,24 @@
     <div>Copyright 2013 &copy; Comity Designs Inc.</div>
   </footer>
 </div>
+
+<script type="text/json" id="bootstrap">
+  {
+    "survey": <%= @survey.to_json %>,
+    "questions": <%= @questions.to_json %>
+  }
+</script>
+
+<% content_for :js do %>
+<script> 
+  $(function(){
+    // flash assets path
+    window.clipboard = '<%= asset_path "ZeroClipboard.swf" %>';
+    // include initialization data
+    var div = $('<div></div>');
+    div.html($('#bootstrap').text());
+    new SurveyBuilder.Routers.AppRouter(JSON.parse(div.text()));
+    Backbone.history.start({pushState: true, root: "/builder/survey"});
+  });
+</script>
+<% end %>

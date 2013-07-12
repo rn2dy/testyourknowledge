@@ -16,5 +16,7 @@
 //= require backbone
 //= require backbone_rails_sync
 //= require backbone_datalink
-//= require backbone/questions
+//= require backbone/survey_builder
+//= require spin.min
+//= require ladda.min
 //= require_tree .

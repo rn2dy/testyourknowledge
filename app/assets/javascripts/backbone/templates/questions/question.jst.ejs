@@ -1,0 +1,37 @@
+<div class="span6">            
+  <div class="control-group row">
+    <div class="span1 bulletin"><span><%= idx %>.</span></div>
+    <div class="span4">
+      <textarea rows="1" class="input-xlarge title" placeholder="unknown"><%= title %></textarea>
+    </div>
+  </div>
+
+  <% _.each(_.pairs(answers), function(answer) { %>
+    <div class="control-group row">
+      <div class="span1 bulletin"><span><%= answer[0] %></span></div>
+      <div class="span4">
+        <textarea class="input-large answer" data-bulletin="<%= answer[0] %>" rows="1" placeholder="..."><%= answer[1] %></textarea>
+        <% var is_correct = (_.indexOf(correctness, answer[0]) != -1) %>
+        <span class="badge badge-<%= is_correct ? 'success' : '' %> marker marker-right">
+          <i class="icon-ok icon-white"></i></span>      
+        <span class="badge badge-<%= is_correct ? '' : 'important' %> marker marker-wrong">
+          <i class="icon-remove icon-white"></i></span>        
+      </div>                  
+    </div>                                
+  <% }); %>
+
+  <div class="control-group row">
+    <div class="span2 add-answer">
+      <button class="btn btn-link">add answer</button>                  
+    </div>
+  </div>            
+</div>
+
+<div class="span4">
+  <label class="radio inline">
+    <input type="radio" name="type-<%= idx %>" value="s" <%= type == "s" ? "checked" : "" %>/>Single-Select</label>
+  <label class="radio inline">
+    <input type="radio" name="type-<%= idx %>" value="m" <%= type == "m" ? "checked" : "" %>/>Muti-Select</label>
+  <label>Score <input type="text" class="input-mini score" style="margin-bottom:5px;" value="<%= score %>"/></label>
+  <button class="btn btn-small randomize">Randomize</button>
+</div>
