@@ -9,7 +9,7 @@ class Survey < ActiveRecord::Base
   
   def total_score
     result = self.questions.inject(0) do |sum, q|
-      sum += q.score
+      sum += q.score.to_i
     end
   end
 
