@@ -17,14 +17,14 @@ class SurveyParticipant < ActiveRecord::Base
     choices.each{ |k, ary| choices[k] = ary.join(',') }
     
     # save user choices
-    sp = Nest.new('survey_participants', $redis)
+    sp = Nest.new('survey_participants', REDIS)
     sp[self.id][:choices].hmset(choices.flatten)
     
     Resque.enqueue(ScoreReportJob, self.id)
   end
   
   def user_choices
-    sp = Nest.new('survey_participants', $redis)
+    sp = Nest.new('survey_participants', REDIS)
     return sp[self.id][:choices].hgetall
   end
   

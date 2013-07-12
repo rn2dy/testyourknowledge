@@ -8,14 +8,14 @@ class Question < ActiveRecord::Base
   def save_answers_and_configs
     raise 'Can not save answers without saving question first!' if self.new_record?
     validate_answers_and_configs
-    questions = Nest.new('questions', $redis)
+    questions = Nest.new('questions', REDIS)
     questions[self.id][:answers].hmset(self.answers.flatten) if self.answers
     questions[self.id][:correctness].sadd(self.correctness) if self.correctness && self.correctness.length > 0
     questions[self.id][:type].set(self.type) if self.type
   end
   
   def answers_and_configs
-    questions = Nest.new('questions', $redis)
+    questions = Nest.new('questions', REDIS)
     return { 
       answers: questions[self.id][:answers].hgetall,
       correctness: questions[self.id][:correctness].smembers,
@@ -24,7 +24,7 @@ class Question < ActiveRecord::Base
   end
   
   def fetch_correctness
-    questions = Nest.new('questions', $redis)
+    questions = Nest.new('questions', REDIS)
     return questions[self.id][:correctness].smembers
   end
   
