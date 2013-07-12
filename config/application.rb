@@ -57,7 +57,8 @@ module Questions
     config.assets.enabled = true
     config.assets.paths << Rails.root.join('app', 'assets', 'flashes')
     # Version of your assets, change this if you want to expire all your assets
-    config.assets.version = '1.0'
-    config.action_mailer.default_url_options = { host: 'localhost:3000' }    
+    config.assets.version = '1.0'       
+    
+    config.assets.initialize_on_precompile = false
   end
 end
