@@ -53,41 +53,82 @@ class SurveyBuilder.Views.Builder.Master extends Backbone.View
       $runner.show()
       setTimeout ->
         $runner.hide()
-      , 1000                                  
-       
-      models = @collection.filter (q) -> q.hasChanged()
-      # clear changed attribtues
-      @collection.each (q) -> q.changed = {}
-      if models.length > 0
-        jsonData = _.map models, (q) -> q.toJSON()
-       
-        $.ajax
-          type: 'POST'
-          dataType: 'json'
-          contentType: 'application/json'
-          url: '/questions/save_all'
-          data: JSON.stringify { questions: jsonData }
-          success: (data) ->
-            console.log data
-          error: (jqXHR, textStatus, errorThrown) ->
-            console.log textStatus, errorThrown
-       else
-         console.log 'un-modified'
-                          
+      , 1000                                                              
+      @saveAllUpdates()                          
     , 10*1000
-       
-     # $.ajax({
-     #   type: 'POST',
-     #   dataType: 'json',
-     #   contentType: 'application/json',
-     #   url: '/questions/save_all',
-     #   data: JSON.stringify(questions: tc.toJSON()),
-     #   success: function(data){ console.log(data) },
-     #   error: function(jqXHR, textStatus, errorThrown) { console.log(textStatus, errorThrown) }     
-     # });
+  
+  saveAllUpdates: -> 
+    models = @collection.filter (q) -> q.hasChanged()    
+    @collection.each (q) -> q.changed = {}
+    if models.length > 0
+      jsonData = _.map models, (q) -> q.toJSON()      
+      SurveyBuilder.API.saveAllQuestionsUpdates jsonData      
+    else
+      console.log 'un-modified'
       
   publishSurvey: ->
-    model = new SurveyBuilder.Models.PublishedSurvey({survey_id: @model.get('id')})
-    view = new SurveyBuilder.Views.Builder.PublisherModal({model: model}) 
-    @$('#builder-form').after view.render().el
-    $('#publisher-modal').modal()
+    # validate input first
+    $('[class*="errmsg"]').hide().empty()
+    
+    if msg = @validateSurvey()
+      anchors = []
+      _.each _.keys(msg), (k) ->
+        $ul = $('<ul>')
+        _.each msg[k], (errmsg) -> $ul.append("<li>#{errmsg}</li>")
+        $('.errmsg-' + k).append($ul).show()                       
+        anchors.push ".errmsg-#{k}"
+        
+      # scroll to error msg      
+      $(anchors[0])[0].scrollIntoView()
+      
+    else
+      clearInterval @autoSave
+      @saveAllUpdates()
+      model = new SurveyBuilder.Models.PublishedSurvey({survey_id: @model.get('id')})
+      view = new SurveyBuilder.Views.Builder.PublisherModal({model: model}) 
+      @$('#builder-form').after view.render().el
+      $('#publisher-modal').modal()
+   
+  validateSurvey: ->
+    # 1. make sure every question has a correct answer
+    # 2. make sure there is no empty questions and answers 
+    msg = {}                       
+    
+    @collection.each (q, idx) ->
+      key = "#{idx+1}"
+      title = q.get('title')
+      answers = q.get('answers')
+      correctness = q.get('correctness')
+      errTit = /^\s*$/.test(title)
+      errAns = _.contains(_.values(answers), '')
+      errCorr= correctness.length == 0
+      if errAns || errCorr
+        msg[key] = []
+        msg[key].push "Empty question body." if errTit
+        msg[key].push "Empty answers." if errAns
+        msg[key].push "You must mark some answers as correct." if errCorr        
+
+    return null if _.isEmpty(msg)
+    return msg
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      

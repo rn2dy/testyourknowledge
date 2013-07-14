@@ -1,6 +1,8 @@
 Questions::Application.routes.draw do
   root :to => "home#index"           
   
+  get '/congratulations' => 'home#congratulations'
+  
   resources :surveys
   resources :published_surveys       
   resources :survey_participants

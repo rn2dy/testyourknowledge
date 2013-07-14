@@ -16,6 +16,6 @@ This is a simple survey builder
 
 
 scripts:
-VERBOS=1 QUEUE=mailer rake resque:work
-VERBOS=1 QUEUE=score_calculation rake resque:work
+VERBOSE=1 QUEUE=mailer rake resque:work
+VERBOSE=1 QUEUE=score_calculation rake resque:work
 

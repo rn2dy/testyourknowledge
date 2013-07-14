@@ -6,11 +6,17 @@ class Question < ActiveRecord::Base
   after_save :save_answers_and_configs
   
   def save_answers_and_configs
-    raise 'Can not save answers without saving question first!' if self.new_record?
+    raise 'Can not save answers without saving question first!' if self.new_record?    
     validate_answers_and_configs
     questions = Nest.new('questions', REDIS)
     questions[self.id][:answers].hmset(self.answers.flatten) if self.answers
-    questions[self.id][:correctness].sadd(self.correctness) if self.correctness && self.correctness.length > 0
+    
+    if self.correctness && self.correctness.length > 0
+      questions[self.id][:correctness].sadd(self.correctness) 
+    else
+      questions[self.id][:correctness].del
+    end
+      
     questions[self.id][:type].set(self.type) if self.type
   end
   
@@ -44,7 +50,7 @@ class Question < ActiveRecord::Base
 
     def validate_answers_and_configs      
       raise 'Incomplete Answers!' if !(self.answers && self.type)
-      raise 'There must be at least two answers!' if self.answers.length < 2 
+      raise 'There must be at least two answers!' if self.answers.length < 2
       # enforce correctness choices at the client side only
       # raise 'More than one correct answers for single-choice question!' if (self.type == 's' && self.correctness.length > 1)
       # raise 'Only one correct answers for multi-choice question!' if (self.type == 'm' && self.correctness.length == 1)      

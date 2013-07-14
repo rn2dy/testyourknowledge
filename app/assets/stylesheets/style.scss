@@ -172,3 +172,19 @@ b.url {
 .alert-error p {
   margin: 0;
 }
+.errmsg {
+  width: 68%;
+  margin-left: 50px;
+  font-size: 0.83em;     
+  margin-bottom: 0;
+  padding-left: 1px;
+  background-color: transparent;
+  display: none;
+  ul { margin-bottom: 0; }
+  li { text-align: left; }
+}
+.congrats {
+  font-weight: 300;
+  margin-top: 15%;
+  text-align: center;
+}

@@ -26,12 +26,16 @@ class SurveyBuilder.Views.Questions.Question extends Backbone.View
     
   saveTitle: (e) ->
     $title = $(e.currentTarget)
-    return if _.isEmpty($title.val())
+    if _.isEmpty($title.val())
+      $title.val @model.get('title')
+      return
     @model.set 'title', $title.val()
     
   saveAnswer: (e) ->
     $answer = $(e.currentTarget)
-    return if _.isEmpty($answer.val())
+    if _.isEmpty($answer.val())
+      $answer.val @model.get('answers')[$answer.data('bulletin')]
+      return
     @model.setAnswers $answer.data('bulletin'), $answer.val()
   
   saveScore: (e) ->
@@ -64,16 +68,16 @@ class SurveyBuilder.Views.Questions.Question extends Backbone.View
       correctness = []
     else
       correctness = _.clone @model.get('correctness')
-    correctness.push $marker.prev('textarea').data('bulletin')
+    correctness.push $marker.prevAll('textarea').data('bulletin')
     @model.set 'correctness', _.uniq(correctness)
      
   markAsWrong: (e) ->
     $marker = $(e.currentTarget)
     $marker.addClass('badge-important').prev().removeClass('badge-success')
     correctness = _.clone(@model.get('correctness')) || []
-    correctness = _.without(correctness, $marker.prev('textarea').data('bulletin'))
+    correctness = _.without(correctness, $marker.prevAll('textarea').data('bulletin'))    
     @model.set 'correctness', correctness
-     
+    
   randomize: ->
     randomized = SurveyBuilder.Utils.shuffle _.pairs(@model.get('answers'))        
     _correctness = []
